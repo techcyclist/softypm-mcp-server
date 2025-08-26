@@ -1,0 +1,11 @@
+#!/usr/bin/env node
+
+// NPM global binary entry point
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const serverPath = join(__dirname, '..', 'dist', 'index.js');
+
+// Import and run the server
+import(serverPath).catch(console.error);

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://raw.githubusercontent.com/anthropics/claude-code/main/mcp-config-schema.json",
+  "mcpServers": {
+    "softypm": {
+      "command": "softypm-mcp-server",
+      "env": {
+        "SOFTYPM_BASE_URL": "https://softypm.com/api",
+        "SOFTYPM_API_TOKEN": "your_api_token_here",
+        "DEFAULT_PROJECT_ID": "123"
+      }
+    }
+  }
+}

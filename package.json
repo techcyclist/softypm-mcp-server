@@ -1,0 +1,55 @@
+{
+  "name": "@softypm/mcp-server",
+  "version": "1.0.2",
+  "description": "MCP server for SoftyPM project management integration with Claude Code",
+  "main": "dist/index.js",
+  "bin": {
+    "softypm-mcp-server": "./bin/softypm-mcp-server"
+  },
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts",
+    "inspect": "tsx --inspect src/index.ts",
+    "test": "tsx src/test.ts"
+  },
+  "keywords": [
+    "mcp",
+    "softypm",
+    "claude-code",
+    "project-management",
+    "agile"
+  ],
+  "author": "SoftyPM",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/techcyclist/softypm-mcp-server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/techcyclist/softypm-mcp-server/issues"
+  },
+  "homepage": "https://softypm.com/claude-code-setup",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.6.0",
+    "axios": "^1.6.0",
+    "dotenv": "^16.3.0",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "tsx": "^4.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "dist/**/*",
+    "bin/**/*",
+    "README.md",
+    "LICENSE",
+    ".env.example"
+  ]
+}
