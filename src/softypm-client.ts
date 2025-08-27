@@ -94,18 +94,31 @@ export class SoftYPMClient {
         const project = response.data.data.project;
         const stories: Story[] = [];
         
+        // Helper function to transform story data
+        const transformStory = (storyData: any): Story => ({
+          id: storyData.id,
+          name: storyData.name,
+          description: storyData.notes || storyData.description,
+          status: typeof storyData.status === 'string' ? parseInt(storyData.status) : storyData.status,
+          estimate: storyData.estimate,
+          epic_id: storyData.epic_id,
+          project_id: storyData.project_id,
+          created_at: storyData.created_at,
+          updated_at: storyData.updated_at,
+        });
+        
         // Collect stories from epics
         if (project.epics) {
           project.epics.forEach((epic: any) => {
             if (epic.stories) {
-              stories.push(...epic.stories);
+              stories.push(...epic.stories.map(transformStory));
             }
           });
         }
         
         // Also get any direct stories on the project
         if (project.stories) {
-          stories.push(...project.stories);
+          stories.push(...project.stories.map(transformStory));
         }
         
         return stories;
@@ -137,11 +150,25 @@ export class SoftYPMClient {
     try {
       const response: AxiosResponse = await this.client.get(`/stories/${storyId}`);
       
+      let storyData;
       if (response.data.success) {
-        return response.data.story || response.data.data;
+        storyData = response.data.story || response.data.data;
+      } else {
+        storyData = response.data.story || response.data;
       }
       
-      return response.data;
+      // Transform the API response to match our interface
+      return {
+        id: storyData.id,
+        name: storyData.name,
+        description: storyData.notes || storyData.description,
+        status: typeof storyData.status === 'string' ? parseInt(storyData.status) : storyData.status,
+        estimate: storyData.estimate,
+        epic_id: storyData.epic_id,
+        project_id: storyData.project_id,
+        created_at: storyData.created_at,
+        updated_at: storyData.updated_at,
+      };
     } catch (error) {
       throw new Error(`Failed to get story ${storyId}: ${error instanceof Error ? error.message : String(error)}`);
     }
