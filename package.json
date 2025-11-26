@@ -1,6 +1,6 @@
 {
   "name": "@softypm/mcp-server",
-  "version": "1.0.5",
+  "version": "1.0.1",
   "description": "MCP server for SoftyPM project management integration with Claude Code",
   "main": "dist/index.js",
   "bin": {
@@ -25,12 +25,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/techcyclist/softypm-mcp-server.git"
+    "url": "https://github.com/softypm/mcp-server.git"
   },
   "bugs": {
-    "url": "https://github.com/techcyclist/softypm-mcp-server/issues"
+    "url": "https://github.com/softypm/mcp-server/issues"
   },
-  "homepage": "https://softypm.com",
+  "homepage": "https://softypm.com/claude-code-setup",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^0.6.0",
     "axios": "^1.6.0",

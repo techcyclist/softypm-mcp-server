@@ -28,8 +28,8 @@ npm install -g @softypm/mcp-server
 **Option B: From Source**
 ```bash
 # Clone the repository
-git clone https://github.com/techcyclist/softypm-mcp-server
-cd softypm-mcp-server
+git clone https://github.com/softypm/mcp-server
+cd mcp-server
 
 # Install and build
 npm install && npm run build

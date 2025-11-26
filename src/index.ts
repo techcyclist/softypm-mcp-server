@@ -273,18 +273,9 @@ class SoftYPMServer {
       const project = await this.softYPMClient.getProject(projectId);
       const stories = await this.softYPMClient.getProjectStories(projectId);
       
-      const backlogStories = stories.filter(s => {
-        const status = typeof s.status === 'string' ? parseInt(s.status) : s.status;
-        return status === 1;
-      });
-      const inProgressStories = stories.filter(s => {
-        const status = typeof s.status === 'string' ? parseInt(s.status) : s.status;
-        return status === 3;
-      });
-      const doneStories = stories.filter(s => {
-        const status = typeof s.status === 'string' ? parseInt(s.status) : s.status;
-        return status === 5;
-      });
+      const backlogStories = stories.filter(s => s.status === 1);
+      const inProgressStories = stories.filter(s => s.status === 3);
+      const doneStories = stories.filter(s => s.status === 5);
       
       return {
         content: [
@@ -372,7 +363,7 @@ ${inProgressStories.length > 0
     try {
       // Get current story status to validate workflow
       const currentStory = await this.softYPMClient.getStory(story_id);
-      const currentStatus = typeof currentStory.status === 'string' ? parseInt(currentStory.status) : currentStory.status;
+      const currentStatus = currentStory.status;
       
       // Validate workflow progression
       const statusNames: Record<number, string> = { 1: 'Backlog', 3: 'In Progress', 5: 'Done' };
@@ -429,13 +420,12 @@ ${inProgressStories.length > 0
     try {
       const story = await this.softYPMClient.getStory(story_id);
       const statusNames: Record<number, string> = { 1: 'Backlog', 3: 'In Progress', 5: 'Done' };
-      const storyStatus = typeof story.status === 'string' ? parseInt(story.status) : story.status;
       
       return {
         content: [
           {
             type: 'text',
-            text: `📋 **Story #${story.id}**: ${story.name}\n\n📝 **Description**: ${story.description || 'No description'}\n📊 **Status**: ${statusNames[storyStatus] || storyStatus}\n⏱️ **Estimate**: ${story.estimate || 'Not estimated'} hours\n📅 **Created**: ${story.created_at ? new Date(story.created_at).toLocaleDateString() : 'Unknown'}\n\n${storyStatus === 1 ? '💡 **Next**: Move to "In Progress" when you start working' : storyStatus === 3 ? '🔨 **Active**: Currently in progress' : '✅ **Complete**: This story is done'}`,
+            text: `📋 **Story #${story.id}**: ${story.name}\n\n📝 **Description**: ${story.description || 'No description'}\n📊 **Status**: ${statusNames[story.status] || story.status}\n⏱️ **Estimate**: ${story.estimate || 'Not estimated'} hours\n📅 **Created**: ${story.created_at ? new Date(story.created_at).toLocaleDateString() : 'Unknown'}\n\n${story.status === 1 ? '💡 **Next**: Move to "In Progress" when you start working' : story.status === 3 ? '🔨 **Active**: Currently in progress' : '✅ **Complete**: This story is done'}`,
           },
         ],
       };
@@ -468,11 +458,7 @@ ${inProgressStories.length > 0
       
       let filteredStories = stories;
       if (status && status !== 'all') {
-        const targetStatus = parseInt(status);
-        filteredStories = stories.filter(s => {
-          const storyStatus = typeof s.status === 'string' ? parseInt(s.status) : s.status;
-          return storyStatus === targetStatus;
-        });
+        filteredStories = stories.filter(s => s.status === parseInt(status));
       }
       
       if (filteredStories.length === 0) {
@@ -488,10 +474,7 @@ ${inProgressStories.length > 0
       
       const storyList = filteredStories
         .slice(0, 10) // Limit to 10 stories
-        .map(story => {
-          const storyStatus = typeof story.status === 'string' ? parseInt(story.status) : story.status;
-          return `• #${story.id}: ${story.name} [${statusNames[storyStatus]}] ${story.estimate ? `(${story.estimate}h)` : ''}`;
-        })
+        .map(story => `• #${story.id}: ${story.name} [${statusNames[story.status]}] ${story.estimate ? `(${story.estimate}h)` : ''}`)
         .join('\n');
       
       return {
